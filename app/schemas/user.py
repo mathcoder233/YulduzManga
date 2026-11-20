@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-class User(BaseModel):
+class UserRead(BaseModel):
     id: int
     username: str
     email: str
@@ -15,6 +15,3 @@ class UserUpdate(BaseModel):
     username: str
     email: str
     is_active: bool
-
-class UserDelete(BaseModel):
-    id: int 
