@@ -3,7 +3,7 @@ from sqlmodel import Session
 from typing import List
 
 from app.schemas.manga import Manga, MangaCreate, MangaUpdate
-from database import get_session
+from app.database import get_session
 from app.services.manga import get_all_mangas_service, get_mangas_by_genre_service, search_mangas_service, get_manga_by_id_service, get_manga_chapters_service, get_manga_chapter_service, add_manga_service, update_manga_service, delete_manga_service
 
 router = APIRouter(prefix="/mangas", tags=["Mangas"])

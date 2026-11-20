@@ -11,6 +11,7 @@ class Settings(BaseSettings):
 settings = Settings()
 
 
+
 engine = create_engine(settings.database_url, echo=True)
 
 def create_db_and_tables():

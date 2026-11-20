@@ -1,12 +1,11 @@
-# main.py
 from fastapi import FastAPI
-from routers import manga  # Assumes your router file is named mangas.py inside the routers folder
+from app.routers.manga import router as manga_router
+from app.database import create_db_and_tables
 
-app = FastAPI(title="Manga Reader API", version="1.0")
+create_db_and_tables()
 
-# Plug your manga router into the main app
-app.include_router(manga.router)
-
+app = FastAPI(title="Manga API", description="API for managing mangas and their chapters.", version="1.0.0")
+app.include_router(manga_router)
 @app.get("/")
-def root():
-    return {"message": "Welcome to the Manga API! Go to /docs to test your endpoints."}
+async def root():
+    return {"message": "Welcome to the Manga API!"}
