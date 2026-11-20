@@ -1,6 +1,6 @@
 from pydantic import BaseModel, ConfigDict
 
-class Manga(BaseModel):
+class MangaRead(BaseModel):
     id: int
     title: str
     author: str
@@ -16,10 +16,7 @@ class MangaCreate(BaseModel):
     chapters: int
 
 class MangaUpdate(BaseModel):
-    title: str
-    author: str
-    description: str
-    chapters: int
-
-class MangaDelete(BaseModel):
-    id: int
+    title: str | None = None
+    author: str | None = None
+    description: str | None = None
+    chapters: int | None = None
