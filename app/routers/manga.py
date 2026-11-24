@@ -38,17 +38,17 @@ async def get_manga_chapter(manga_id: int, chapter_id: int, session: Session = D
     """Retrieve a specific chapter of a manga by manga ID and chapter ID."""
     return get_manga_chapter_service(manga_id, chapter_id, session)
 
-@router.post("/add", response_model=MangaRead, status_code=status.HTTP_201_CREATED)
+@router.post("/", response_model=MangaRead, status_code=status.HTTP_201_CREATED)
 async def add_manga(manga: MangaCreate, session: Session = Depends(get_session)):
     """Add a new manga to the database."""
     return add_manga_service(manga, session)
 
-@router.put("/update/{manga_id}", response_model=MangaRead)
+@router.put("/{manga_id}", response_model=MangaRead)
 async def update_manga(manga_id: int, manga: MangaUpdate, session: Session = Depends(get_session)):
     """Update an existing manga in the database."""
     return update_manga_service(manga_id, manga, session)
 
-@router.delete("/delete/{manga_id}")
+@router.delete("/{manga_id}")
 async def delete_manga(manga_id: int, session: Session = Depends(get_session)):
     """Delete a manga from the database."""
     return delete_manga_service(manga_id, session)
