@@ -1,22 +1,34 @@
+const API = "http://127.0.0.1:8000/mangas";
 
-const API = "http://localhost:8000/mangas";
 
 
-// barcha manga olish
+// =======================
+// LOAD ALL MANGAS
+// =======================
 
-async function getMangas(){
+async function loadMangas(){
+
 
     const response = await fetch(`${API}/`);
 
+
     const mangas = await response.json();
 
-    showMangas(mangas);
+
+    displayMangas(mangas);
 
 }
 
 
 
-function showMangas(mangas){
+
+// =======================
+// DISPLAY CARDS
+// =======================
+
+
+function displayMangas(mangas){
+
 
     const container =
     document.getElementById("mangaContainer");
@@ -25,32 +37,47 @@ function showMangas(mangas){
     container.innerHTML="";
 
 
+
     mangas.forEach(manga=>{
 
 
-        container.innerHTML += `
-
-        <div class="card">
-
-            <h2>${manga.title}</h2>
-
-            <p>
-            ${manga.description ?? ""}
-            </p>
-
-            <p>
-            Genre:
-            ${manga.genre}
-            </p>
+        const card =
+        document.createElement("div");
 
 
-            <button onclick="getChapters(${manga.id})">
-            Chapters
-            </button>
+        card.className="manga-card";
 
-        </div>
+
+
+        card.innerHTML=`
+
+        <h2>${manga.title}</h2>
+
+        <p>
+        Author: ${manga.author}
+        </p>
+
+
+        <p>
+        Chapters: ${manga.chapters}
+        </p>
+
+
+        <button onclick="getManga(${manga.id})">
+        Details
+        </button>
+
+
+        <button onclick="deleteManga(${manga.id})">
+        Delete
+        </button>
+
 
         `;
+
+
+
+        container.appendChild(card);
 
 
     });
@@ -60,98 +87,126 @@ function showMangas(mangas){
 
 
 
-// search endpoint
+
+
+// =======================
+// GET ONE MANGA
+// =======================
+
+
+async function getManga(id){
+
+
+    const response =
+    await fetch(`${API}/${id}`);
+
+
+
+    const manga =
+    await response.json();
+
+
+
+    document.getElementById(
+        "mangaDetails"
+    ).innerHTML=`
+
+
+    <h2>${manga.title}</h2>
+
+
+    <p>
+    Author:
+    ${manga.author}
+    </p>
+
+
+    <p>
+    ${manga.description}
+    </p>
+
+
+    <p>
+    Chapters:
+    ${manga.chapters}
+    </p>
+
+
+    `;
+
+
+}
+
+
+
+
+
+
+// =======================
+// SEARCH
+// =======================
+
 
 async function searchManga(){
 
 
-    const query =
-    document.getElementById("searchInput").value;
+const query =
+document.getElementById(
+"searchInput"
+).value;
 
 
-    const response =
-    await fetch(`${API}/search?query=${query}`);
+
+const response =
+await fetch(
+`${API}/search?query=${query}`
+);
 
 
-    const data =
-    await response.json();
+
+const mangas =
+await response.json();
 
 
-    showMangas(data);
+
+displayMangas(mangas);
 
 
 }
 
 
 
-// genre endpoint
+
+
+
+// =======================
+// GENRE FILTER
+// =======================
+
 
 async function filterGenre(){
 
 
-    const genre =
-    document.getElementById("genreInput").value;
-
-
-    const response =
-    await fetch(`${API}/genre?genre=${genre}`);
-
-
-    const data =
-    await response.json();
-
-
-    showMangas(data);
-
-
-}
+const genre =
+document.getElementById(
+"genreInput"
+).value;
 
 
 
-// chapters olish
-
-async function getChapters(id){
-
-
-    const response =
-    await fetch(`${API}/${id}/chapters`);
+const response =
+await fetch(
+`${API}/genre?genre=${genre}`
+);
 
 
-    const chapters =
-    await response.json();
+
+const mangas =
+await response.json();
 
 
-    const container =
-    document.getElementById("chapterContainer");
 
-
-    container.innerHTML="";
-
-
-    chapters.forEach(chapter=>{
-
-
-        container.innerHTML += `
-
-        <div class="chapter">
-
-        <h3>
-        Chapter ${chapter.number}
-        </h3>
-
-
-        <button onclick="
-        openChapter(${id},${chapter.id})
-        ">
-        Read
-        </button>
-
-        </div>
-
-        `;
-
-
-    });
+displayMangas(mangas);
 
 
 }
@@ -159,24 +214,82 @@ async function getChapters(id){
 
 
 
-// bitta chapter
-
-async function openChapter(mangaId, chapterId){
 
 
-    const response =
-    await fetch(
-    `${API}/${mangaId}/chapters/${chapterId}`
-    );
+// =======================
+// ADD MANGA
+// =======================
 
 
-    const chapter =
-    await response.json();
+async function addManga(){
 
 
-    alert(
-    JSON.stringify(chapter,null,2)
-    );
+
+const manga={
+
+
+title:
+document.getElementById(
+"titleInput"
+).value,
+
+
+author:
+document.getElementById(
+"authorInput"
+).value,
+
+
+description:
+document.getElementById(
+"descriptionInput"
+).value,
+
+
+chapters:Number(
+document.getElementById(
+"chaptersInput"
+).value
+)
+
+
+
+};
+
+
+
+const response =
+await fetch(
+`${API}/`,
+{
+
+method:"POST",
+
+
+headers:{
+"Content-Type":"application/json"
+},
+
+
+body:
+JSON.stringify(manga)
+
+}
+
+);
+
+
+
+if(response.ok){
+
+alert(
+"Manga added"
+);
+
+
+loadMangas();
+
+}
 
 
 }
@@ -184,4 +297,39 @@ async function openChapter(mangaId, chapterId){
 
 
 
-getMangas();
+
+
+// =======================
+// DELETE
+// =======================
+
+
+async function deleteManga(id){
+
+
+await fetch(
+`${API}/${id}`,
+{
+method:"DELETE"
+}
+);
+
+
+
+loadMangas();
+
+
+}
+
+
+
+
+
+
+
+// =======================
+// START
+// =======================
+
+
+loadMangas();

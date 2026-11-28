@@ -1,40 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Manga Yulduz</title>
+
     <link rel="stylesheet" href="style.css">
 </head>
 
+
 <body>
 
+
 <header>
+
     <h1>🌟 Manga Yulduz</h1>
 
     <div class="search-box">
-        <input id="searchInput" placeholder="Search manga...">
-        <button onclick="searchManga()">Search</button>
+
+        <input 
+            id="searchInput"
+            placeholder="Search manga..."
+        >
+
+        <button onclick="searchManga()">
+            Search
+        </button>
+
     </div>
+
 
 </header>
 
 
+
 <section class="filters">
-    <input id="genreInput" placeholder="Genre">
-    <button onclick="filterGenre()">Filter</button>
+
+    <input 
+        id="genreInput"
+        placeholder="Genre"
+    >
+
+    <button onclick="filterGenre()">
+        Filter
+    </button>
+
+
+    <button onclick="loadMangas()">
+        All Manga
+    </button>
+
+
 </section>
 
 
-<main id="mangaContainer">
-
-</main>
 
 
-<div id="chapterContainer"></div>
+<section class="admin">
+
+<h2>Add Manga</h2>
+
+
+<input id="titleInput" placeholder="Title">
+
+<input id="authorInput" placeholder="Author">
+
+<textarea 
+id="descriptionInput"
+placeholder="Description">
+</textarea>
+
+
+<input 
+id="chaptersInput"
+type="number"
+placeholder="Chapters"
+>
+
+
+<button onclick="addManga()">
+Add Manga
+</button>
+
+
+</section>
+
+
+
+
+
+<main id="mangaContainer"></main>
+
+
+
+<section id="mangaDetails">
+
+</section>
+
 
 
 <script src="script.js"></script>
 
 </body>
+
 </html>
